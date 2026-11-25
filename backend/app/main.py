@@ -11,6 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app import models  # noqa: F401  (importing registers the tables on Base)
 from app.database import Base, engine
+from app.routers import auth
 
 # Create the tables (users, transactions) if they don't exist yet.
 # Note: this only CREATES missing tables; it does not change existing ones.
@@ -25,6 +26,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Plug in the groups of routes defined in app/routers/
+app.include_router(auth.router)
 
 
 @app.get("/api/health")
