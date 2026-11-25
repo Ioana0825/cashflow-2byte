@@ -11,7 +11,7 @@ We have two tables:
     transactions  -> incomes and expenses; every row belongs to one user
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import (
     CheckConstraint,
@@ -29,6 +29,16 @@ from sqlalchemy.orm import relationship
 from app.database import Base
 
 
+def utc_now() -> datetime:
+    """Current time in UTC, used as the default for created_at / updated_at.
+
+    datetime.utcnow() is deprecated in new Python versions, so we use
+    datetime.now(timezone.utc). Our columns store times without a time zone,
+    so we drop the zone info (.replace(tzinfo=None)); the value is still UTC.
+    """
+    return datetime.now(timezone.utc).replace(tzinfo=None)
+
+
 class User(Base):
     __tablename__ = "users"
 
@@ -42,7 +52,7 @@ class User(Base):
     hashed_password = Column(String, nullable=False)
 
     # Filled in automatically when the row is created
-    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    created_at = Column(DateTime, default=utc_now, nullable=False)
 
     # Lets us write `user.transactions` to get all of a user's transactions.
     # cascade="all, delete-orphan" -> deleting a user also deletes their transactions.
@@ -72,10 +82,10 @@ class Transaction(Base):
     description = Column(String, nullable=True)  # optional note
     date = Column(Date, nullable=False)  # the day the money moved
 
-    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    created_at = Column(DateTime, default=utc_now, nullable=False)
     # onupdate -> SQLAlchemy refreshes this every time the row is edited
     updated_at = Column(
-        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False
+        DateTime, default=utc_now, onupdate=utc_now, nullable=False
     )
 
     # Lets us write `transaction.owner` to get the User object
