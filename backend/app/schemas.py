@@ -133,3 +133,12 @@ class SummaryOut(BaseModel):
     balance: float  # total_income - total_expenses
     transaction_count: int
     by_category: list[CategoryTotal]  # handy for charts on the frontend
+
+
+class MonthlyTotal(BaseModel):
+    """One month in GET /api/summary/monthly (for a spending-trend chart)."""
+
+    month: str  # "2026-11"
+    income: float
+    expenses: float
+    balance: float
