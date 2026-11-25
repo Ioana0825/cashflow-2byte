@@ -11,6 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app import models  # noqa: F401  (importing registers the tables on Base)
 from app.database import Base, engine
+from app.errors import register_error_handlers
 from app.routers import auth
 
 # Create the tables (users, transactions) if they don't exist yet.
@@ -18,6 +19,9 @@ from app.routers import auth
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="CashFlow API")
+
+# All errors are returned as {"error": "...", "field": ...} (see errors.py)
+register_error_handlers(app)
 
 app.add_middleware(
     CORSMiddleware,
