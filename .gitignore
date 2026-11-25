@@ -1,3 +1,16 @@
+# Node / frontend
 node_modules/
-.env
 dist/
+
+# Secrets: every developer keeps their own .env (copy .env.example)
+.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# IDE files that are personal to each machine
+.idea/workspace.xml
+.idea/dataSources.local.xml
