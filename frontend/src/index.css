@@ -300,7 +300,7 @@ a:hover {
   padding: 0 14px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.025);
+  background-color: rgba(255, 255, 255, 0.025);
   color: var(--text);
   font: inherit;
   transition:
@@ -317,7 +317,7 @@ a:hover {
 .input:focus {
   outline: none;
   border-color: var(--gold);
-  background: rgba(212, 174, 106, 0.04);
+  background-color: rgba(212, 174, 106, 0.04);
   box-shadow: 0 0 0 3px rgba(212, 174, 106, 0.14);
 }
 /* aria-invalid is set by our components when the value is wrong */
