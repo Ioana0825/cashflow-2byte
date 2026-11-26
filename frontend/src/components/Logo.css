@@ -1,0 +1,47 @@
+/* Small logo: icon and name next to each other */
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--text);
+}
+.logo-mark {
+  width: 30px;
+  height: 24px;
+  flex: none;
+}
+.logo-name {
+  font-family: var(--font-serif);
+  font-size: 1.45rem;
+  font-weight: 560;
+  letter-spacing: -0.01em;
+  color: #f1e6cf;
+}
+
+/* Large logo: stacked and centred */
+.logo-lg {
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.logo-lg .logo-mark {
+  width: 52px;
+  height: 42px;
+}
+.logo-lg .logo-name {
+  font-size: 2.3rem;
+}
+
+/* The tagline with a short gold line on each side: — PERSONAL FINANCE — */
+.logo-tagline {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  font-size: 0.62rem;
+}
+.logo-tagline::before,
+.logo-tagline::after {
+  content: '';
+  width: 28px;
+  height: 1px;
+  background: var(--line-strong);
+}

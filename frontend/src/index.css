@@ -1,1 +1,408 @@
-:root{}
+/*
+ * CashFlow design system: the colours, fonts and basic elements (buttons,
+ * inputs, cards) that every page shares.
+ *
+ * We use CSS "custom properties" (variables), written --name. They are
+ * defined once in :root and used everywhere with var(--name). To change the
+ * whole look (e.g. a different gold) you only edit them here.
+ *
+ * Look & feel (from our mockups): warm near-black background, thin gold
+ * lines, gold buttons, and serif headings with a clean sans-serif for text.
+ */
+
+/* ------------------------------------------------------------ design tokens */
+:root {
+  /* Backgrounds, from darkest to lightest. Slightly warm (brownish) blacks
+     look richer next to gold than a pure #000 */
+  --bg: #0c0a08;
+  --bg-raised: #13100d;
+  --surface: #181410;
+  --surface-2: #211b15;
+  --surface-3: #2a231b;
+
+  /* Gold, used for accents, active states and the main buttons */
+  --gold: #d4ae6a;
+  --gold-bright: #ecd39f;
+  --gold-deep: #a07a3a;
+  --gold-gradient: linear-gradient(180deg, #ecd29a 0%, #d2a95f 55%, #b88c45 100%);
+
+  /* Hairlines: gold at low opacity, so borders glow faintly instead of grey */
+  --line: rgba(212, 174, 106, 0.13);
+  --line-strong: rgba(212, 174, 106, 0.32);
+
+  /* Text */
+  --text: #eee6d8;
+  --text-muted: #a89d8b;
+  --text-faint: #716857;
+
+  /* Money colours: muted, so they fit the dark/gold theme */
+  --income: #6cc495;
+  --income-bg: rgba(108, 196, 149, 0.1);
+  --expense: #e57d72;
+  --expense-bg: rgba(229, 125, 114, 0.1);
+
+  /* Fonts (loaded in main.jsx). Fraunces = serif for headings and numbers,
+     Manrope = sans-serif for everything else */
+  --font-serif: 'Fraunces Variable', 'Georgia', serif;
+  --font-sans: 'Manrope Variable', 'Segoe UI', system-ui, sans-serif;
+
+  /* Shapes and shadows */
+  --radius-sm: 8px;
+  --radius: 14px;
+  --radius-lg: 22px;
+  --shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.8);
+
+  color-scheme: dark;
+}
+
+/* ------------------------------------------------------------ base / reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box; /* width includes padding and border: easier maths */
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-serif);
+  font-weight: 560;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 0;
+  /* "opsz" = optical size: Fraunces draws big headings with finer details */
+  font-optical-sizing: auto;
+}
+
+h1 {
+  font-size: clamp(1.9rem, 1.4rem + 1.6vw, 2.6rem);
+}
+h2 {
+  font-size: 1.35rem;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: var(--gold);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--gold-bright);
+}
+
+/* Keyboard users see a clear gold ring; mouse clicks don't show it */
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* Money and other numbers: serif, and every digit the same width
+   ("tabular") so amounts line up in columns */
+.num {
+  font-family: var(--font-serif);
+  font-variant-numeric: tabular-nums lining-nums;
+  letter-spacing: 0;
+}
+
+.income {
+  color: var(--income);
+}
+.expense {
+  color: var(--expense);
+}
+
+/* Hidden on screen but still read by screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Small uppercase label with wide letter spacing, like
+   "PERSONAL FINANCE MANAGER" in the mockups */
+.eyebrow {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ------------------------------------------------------------ buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 44px;
+  padding: 0 1.2rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    filter 0.15s,
+    background 0.15s,
+    border-color 0.15s,
+    transform 0.1s;
+}
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Main action: solid gold */
+.btn-gold {
+  background: var(--gold-gradient);
+  color: #1c1409;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 8px 24px -10px rgba(212, 174, 106, 0.55);
+}
+.btn-gold:hover:not(:disabled) {
+  filter: brightness(1.07);
+}
+
+/* Secondary action: gold outline */
+.btn-outline {
+  background: transparent;
+  border-color: var(--line-strong);
+  color: var(--gold-bright);
+}
+.btn-outline:hover:not(:disabled) {
+  background: rgba(212, 174, 106, 0.08);
+  border-color: var(--gold);
+}
+
+/* Destructive action (delete) */
+.btn-danger {
+  background: #b9483d;
+  color: #fff4f2;
+}
+.btn-danger:hover:not(:disabled) {
+  background: #c95347;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-muted);
+}
+.btn-ghost:hover:not(:disabled) {
+  color: var(--text);
+  background: var(--surface-2);
+}
+
+.btn-block {
+  width: 100%;
+}
+
+/* Small square button with only an icon (edit / delete in the list) */
+.icon-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition:
+    color 0.15s,
+    background 0.15s,
+    border-color 0.15s;
+}
+.icon-btn svg {
+  width: 17px;
+  height: 17px;
+}
+.icon-btn:hover {
+  color: var(--gold-bright);
+  background: var(--surface-2);
+  border-color: var(--line);
+}
+.icon-btn.danger:hover {
+  color: var(--expense);
+}
+
+/* ------------------------------------------------------------ form fields */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.field-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* Wrapper that can hold an icon on the left and a button on the right */
+.input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.input-wrap > .input-icon {
+  position: absolute;
+  left: 14px;
+  width: 18px;
+  height: 18px;
+  color: var(--text-faint);
+  pointer-events: none;
+}
+.input-wrap.has-icon .input {
+  padding-left: 44px;
+}
+.input-wrap .input-action {
+  position: absolute;
+  right: 6px;
+}
+
+.input {
+  width: 100%;
+  height: 46px;
+  padding: 0 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.025);
+  color: var(--text);
+  font: inherit;
+  transition:
+    border-color 0.15s,
+    background 0.15s,
+    box-shadow 0.15s;
+}
+.input::placeholder {
+  color: var(--text-faint);
+}
+.input:hover {
+  border-color: var(--line-strong);
+}
+.input:focus {
+  outline: none;
+  border-color: var(--gold);
+  background: rgba(212, 174, 106, 0.04);
+  box-shadow: 0 0 0 3px rgba(212, 174, 106, 0.14);
+}
+/* aria-invalid is set by our components when the value is wrong */
+.input[aria-invalid='true'] {
+  border-color: var(--expense);
+}
+textarea.input {
+  height: auto;
+  min-height: 84px;
+  padding: 12px 14px;
+  resize: vertical;
+}
+select.input {
+  appearance: none;
+  /* little gold arrow drawn with an inline SVG */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23d4ae6a' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 38px;
+}
+select.input option {
+  background: var(--surface-2);
+}
+/* Makes the calendar icon of <input type="date"> visible on dark backgrounds */
+input[type='date'].input::-webkit-calendar-picker-indicator {
+  filter: invert(0.75) sepia(1) saturate(2.5) hue-rotate(5deg);
+  cursor: pointer;
+}
+
+.field-error {
+  font-size: 0.8rem;
+  color: var(--expense);
+}
+.field-hint {
+  font-size: 0.8rem;
+  color: var(--text-faint);
+}
+
+/* Error box at the top of a form (e.g. "Incorrect email or password") */
+.form-alert {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  padding: 0.75rem 0.9rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(229, 125, 114, 0.35);
+  background: var(--expense-bg);
+  color: #f3b3ab;
+  font-size: 0.88rem;
+}
+.form-alert svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+}
+
+/* ------------------------------------------------------------ cards / panels */
+.panel {
+  background: linear-gradient(180deg, var(--surface) 0%, var(--bg-raised) 100%);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+}
+
+/* Spinner shown while something loads */
+.spinner {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--line-strong);
+  border-top-color: var(--gold);
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Respect the operating-system setting "reduce motion" */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
