@@ -1,0 +1,220 @@
+/* ------------------------------------------------------------ page frame */
+.auth-page {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  /* The gold lines stick out a bit; cut that part off. "clip" (not "hidden")
+     also makes sure the box can never be scrolled sideways, e.g. when the
+     browser scrolls to the auto-focused email input */
+  overflow: clip;
+  /* A soft warm glow behind the card, on top of the dark background */
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 35%, rgba(212, 174, 106, 0.07), transparent 70%),
+    var(--bg);
+}
+
+.auth-lines {
+  position: absolute;
+  pointer-events: none; /* clicks go through the decoration */
+  opacity: 0.55;
+}
+.auth-lines-bottom {
+  left: -4%;
+  bottom: -6%;
+  width: 52%;
+  height: 46%;
+}
+.auth-lines-top {
+  right: -4%;
+  top: 6%;
+  width: 40%;
+  height: 34%;
+  opacity: 0.35;
+}
+
+/* ------------------------------------------------------------ top bar */
+.auth-topbar {
+  position: relative; /* stays above the lines */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem clamp(1.2rem, 4vw, 3.5rem);
+  border-bottom: 1px solid var(--line);
+}
+.auth-brand {
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+}
+.auth-motto {
+  padding-left: 1.6rem;
+  border-left: 1px solid var(--line-strong);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+.auth-motto i {
+  font-style: normal;
+  color: var(--gold);
+  margin: 0 0.35rem;
+}
+.auth-top-action {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* ------------------------------------------------------------ content */
+.auth-main {
+  position: relative;
+  flex: 1;
+  display: grid;
+  place-items: center;
+  padding: clamp(1.5rem, 4vw, 3rem) 1rem 3rem;
+}
+
+/* Register: a text column on the left, the card in the middle */
+.auth-main.with-aside {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 460px) minmax(0, 1fr);
+  gap: 3rem;
+  align-items: center;
+}
+.auth-main.with-aside .auth-card {
+  grid-column: 2;
+}
+.auth-aside {
+  grid-column: 1;
+  justify-self: end;
+  max-width: 300px;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 460px;
+  padding: clamp(1.6rem, 4vw, 2.6rem);
+  border-radius: 26px;
+  border: 1px solid var(--line-strong);
+  /* Two backgrounds: a faint gold sheen at the top + the dark card colour */
+  background:
+    linear-gradient(180deg, rgba(212, 174, 106, 0.06), transparent 40%),
+    linear-gradient(180deg, #1a1611 0%, #120f0c 100%);
+  box-shadow:
+    var(--shadow),
+    inset 0 1px 0 rgba(255, 237, 200, 0.06);
+}
+
+/* ------------------------------------------------------------ card content
+   (used by Login.jsx and Register.jsx) */
+.auth-head {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1.8rem;
+}
+.auth-head h1 {
+  margin-top: 1.2rem;
+}
+.auth-head .auth-badge {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  color: var(--gold);
+}
+.auth-head .auth-badge svg {
+  width: 44px;
+  height: 44px;
+}
+.auth-head .auth-badge + h1 {
+  margin-top: 0.2rem;
+}
+.auth-sub {
+  color: var(--text-muted);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.05rem;
+}
+.auth-form .btn-gold {
+  height: 50px;
+  margin-top: 0.4rem;
+  font-size: 1rem;
+}
+
+.auth-switch {
+  margin-top: 1.5rem;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+.auth-switch a {
+  font-weight: 650;
+}
+
+/* Left column on Register: "Your finances, simplified." */
+.auth-aside h2 {
+  font-size: clamp(2rem, 1.4rem + 1.4vw, 2.7rem);
+  font-style: italic;
+  font-weight: 420;
+  line-height: 1.12;
+}
+.auth-aside hr {
+  width: 56px;
+  margin: 1.6rem 0;
+  border: 0;
+  border-top: 1px solid var(--gold);
+}
+.auth-perks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
+}
+.auth-perks li {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--text-muted);
+}
+.auth-perks svg {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  color: var(--gold);
+}
+
+/* ------------------------------------------------------------ smaller screens */
+@media (max-width: 1000px) {
+  /* No room for the left column: hide it and centre the card */
+  .auth-main.with-aside {
+    grid-template-columns: minmax(0, 460px);
+    justify-content: center;
+  }
+  .auth-main.with-aside .auth-card {
+    grid-column: 1;
+  }
+  .auth-aside {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .auth-motto {
+    display: none;
+  }
+  .auth-top-action .auth-top-text {
+    display: none;
+  }
+  .auth-card {
+    border-radius: 20px;
+  }
+}

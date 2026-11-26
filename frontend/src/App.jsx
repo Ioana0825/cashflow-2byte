@@ -13,6 +13,8 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 
 import { GuestRoute, ProtectedRoute } from './components/RouteGuards'
 import { AuthProvider } from './context/AuthContext'
+import Login from './pages/Login'
+import Register from './pages/Register'
 
 // Temporary placeholders, replaced by the real pages in the next steps
 const Placeholder = ({ title }) => <h1 style={{ padding: 40 }}>{title}</h1>
@@ -23,8 +25,8 @@ export default function App() {
       <AuthProvider>
         <Routes>
           <Route element={<GuestRoute />}>
-            <Route path="/login" element={<Placeholder title="Login" />} />
-            <Route path="/register" element={<Placeholder title="Register" />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
           </Route>
 
           <Route element={<ProtectedRoute />}>
