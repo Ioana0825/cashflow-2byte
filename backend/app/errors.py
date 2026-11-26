@@ -45,6 +45,11 @@ def _friendly_message(err: dict) -> str:
         msg = msg[len("Value error, "):]
     if err["type"] == "missing":
         msg = "This field is required"
+    # The email checker explains in a lot of technical detail what's wrong
+    # ("The part after the @-sign is a special-use or reserved name...").
+    # The user only needs to know the address isn't valid.
+    elif err["loc"] and err["loc"][-1] == "email":
+        msg = "Enter a valid email address"
     return msg
 
 
