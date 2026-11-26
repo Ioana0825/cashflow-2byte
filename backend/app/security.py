@@ -32,7 +32,7 @@ from datetime import datetime, timedelta, timezone
 import bcrypt
 from fastapi import Depends, HTTPException, Request, Response, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
-from jose import JWTError, jwt
+import jwt  # the PyJWT package
 from sqlalchemy.orm import Session
 
 from app.config import (
@@ -97,7 +97,7 @@ def create_access_token(user_id: int) -> str:
     expire = datetime.now(timezone.utc) + timedelta(minutes=JWT_EXPIRE_MINUTES)
     payload = {
         "sub": str(user_id),  # "subject": who the token is about (must be a string)
-        "exp": expire,  # "expiry": jose rejects the token after this moment
+        "exp": expire,  # "expiry": PyJWT rejects the token after this moment
     }
     return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
 
@@ -109,7 +109,7 @@ def decode_access_token(token: str) -> int | None:
         # token that claims a different (e.g. "none") algorithm
         payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
         return int(payload["sub"])
-    except (JWTError, KeyError, ValueError):
+    except (jwt.InvalidTokenError, KeyError, ValueError):
         return None
 
 

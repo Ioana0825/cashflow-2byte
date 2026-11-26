@@ -14,8 +14,10 @@ pydantic==2.14.4
 email-validator==2.4.0
 
 # Security: password hashing + JWT tokens
+# (PyJWT replaced python-jose, which has known security problems and is
+#  barely maintained)
 bcrypt==5.0.0
-python-jose[cryptography]==3.5.0
+PyJWT==2.15.1
 
 # Reads the .env file
 python-dotenv==1.2.4
