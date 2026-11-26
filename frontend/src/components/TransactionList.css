@@ -149,27 +149,40 @@
   }
 }
 
-/* Phones: compact cards [badge | title + category·date | amount] */
+/* Phones: one compact line per transaction
+   [badge + title + category·date | amount | edit delete] */
 @media (max-width: 600px) {
   .tx-head,
   .tx-date {
     display: none;
   }
   .tx-row {
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 0.3rem 0.8rem;
-    padding: 0.85rem 0.2rem;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: 0.5rem;
+    padding: 0.75rem 0;
+  }
+  .tx-main {
+    gap: 0.65rem;
   }
   .tx-sub {
     display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .tx-badge {
+    width: 34px;
+    height: 34px;
   }
   .tx-amount {
-    font-size: 1rem;
+    font-size: 0.98rem;
   }
-  /* Actions move to the second line, under the amount */
   .tx-actions {
-    grid-column: 2;
-    margin-top: -0.3rem;
+    gap: 0;
+  }
+  .tx-actions .icon-btn {
+    width: 30px;
+    height: 30px;
   }
 }
 

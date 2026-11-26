@@ -10,17 +10,12 @@ import './Logo.css'
 export function LogoMark({ className = '' }) {
   return (
     <svg className={`logo-mark ${className}`} viewBox="0 0 40 32" aria-hidden="true">
-      <defs>
-        {/* A vertical gold gradient, reused by every bar via url(#logo-gold) */}
-        <linearGradient id="logo-gold" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#f1dcab" />
-          <stop offset="1" stopColor="#b48843" />
-        </linearGradient>
-      </defs>
-      <rect x="2" y="19" width="6" height="11" rx="1" fill="url(#logo-gold)" />
-      <rect x="11" y="14" width="6" height="16" rx="1" fill="url(#logo-gold)" />
-      <rect x="20" y="9" width="6" height="21" rx="1" fill="url(#logo-gold)" />
-      <rect x="29" y="2" width="6" height="28" rx="1" fill="url(#logo-gold)" />
+      {/* Plain colours, darker to lighter. (A shared <linearGradient> would break
+          when the sidebar copy of the logo is hidden with display: none.) */}
+      <rect x="2" y="19" width="6" height="11" rx="1" fill="#b98d48" />
+      <rect x="11" y="14" width="6" height="16" rx="1" fill="#cfa660" />
+      <rect x="20" y="9" width="6" height="21" rx="1" fill="#e2bf7c" />
+      <rect x="29" y="2" width="6" height="28" rx="1" fill="#f0d9a6" />
     </svg>
   )
 }

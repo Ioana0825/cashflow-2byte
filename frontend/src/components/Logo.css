@@ -45,3 +45,15 @@
   height: 1px;
   background: var(--line-strong);
 }
+
+/* Narrow phones: tighter tagline so it stays on one line */
+@media (max-width: 420px) {
+  .logo-tagline {
+    gap: 0.6rem;
+    letter-spacing: 0.16em;
+  }
+  .logo-tagline::before,
+  .logo-tagline::after {
+    width: 16px;
+  }
+}
