@@ -28,7 +28,7 @@ function initialValues(transaction) {
   }
   return {
     type: transaction.type,
-    amount: String(transaction.amount),
+    amount: Number(transaction.amount).toFixed(2), // 52.3 -> "52.30"
     category: transaction.category,
     date: transaction.date,
     description: transaction.description ?? '',

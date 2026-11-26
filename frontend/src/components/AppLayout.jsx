@@ -9,8 +9,9 @@
  *
  * The layout also owns the "add / edit transaction" window, because both the
  * Dashboard and the Transactions page need it (and the "+" button lives in
- * the layout). Pages reach it through React Router's "outlet context":
- *     const { openEditor, dataVersion } = useOutletContext()
+ * the layout). The same goes for the "delete?" confirmation window.
+ * Pages reach both through React Router's "outlet context":
+ *     const { openEditor, confirmDelete, dataVersion } = useOutletContext()
  * `dataVersion` goes up by 1 after every save or delete; pages use it as a
  * signal to load their data again, so totals are always up to date (F09).
  */
@@ -18,6 +19,7 @@ import { useCallback, useState } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 
 import { useAuth } from '../context/AuthContext'
+import DeleteDialog from './DeleteDialog'
 import GoldLines from './GoldLines'
 import { HomeIcon, ListIcon, LogoutIcon, PlusIcon } from './Icons'
 import Logo from './Logo'
@@ -37,8 +39,12 @@ export default function AppLayout() {
   const [editor, setEditor] = useState(null)
   const [dataVersion, setDataVersion] = useState(0)
 
+  // The transaction waiting for "are you sure?" before being deleted (or null)
+  const [toDelete, setToDelete] = useState(null)
+
   const openEditor = useCallback((transaction = null) => setEditor({ transaction }), [])
   const closeEditor = useCallback(() => setEditor(null), [])
+  const confirmDelete = useCallback((transaction) => setToDelete(transaction), [])
   const refreshData = useCallback(() => setDataVersion((v) => v + 1), [])
 
   async function handleLogout() {
@@ -100,7 +106,7 @@ export default function AppLayout() {
 
       {/* ------------------------------------------------ page content */}
       <main className="app-main">
-        <Outlet context={{ openEditor, dataVersion, refreshData }} />
+        <Outlet context={{ openEditor, confirmDelete, dataVersion }} />
       </main>
 
       {/* ------------------------------------------------ mobile bottom bar */}
@@ -130,6 +136,17 @@ export default function AppLayout() {
           onClose={closeEditor}
           onSaved={() => {
             closeEditor()
+            refreshData()
+          }}
+        />
+      )}
+
+      {toDelete && (
+        <DeleteDialog
+          transaction={toDelete}
+          onClose={() => setToDelete(null)}
+          onDeleted={() => {
+            setToDelete(null)
             refreshData()
           }}
         />

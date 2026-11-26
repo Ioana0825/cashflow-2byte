@@ -1,0 +1,180 @@
+/*
+ * Desktop: each .tx-row is a CSS Grid with 6 columns, so all rows line up
+ * like a table. The column sizes are defined once here.
+ */
+.tx-list {
+  --tx-columns: minmax(0, 1.6fr) minmax(0, 1fr) 120px 96px 150px 84px;
+}
+
+.tx-row {
+  display: grid;
+  grid-template-columns: var(--tx-columns);
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem 0.4rem;
+  border-bottom: 1px solid var(--line);
+}
+.tx-row:last-child {
+  border-bottom: 0;
+}
+.tx-row:not(.tx-head):hover {
+  background: rgba(212, 174, 106, 0.03);
+}
+
+/* Column titles */
+.tx-head {
+  padding-top: 0.6rem;
+  padding-bottom: 0.6rem;
+  border-radius: var(--radius-sm);
+  border-bottom: 0;
+  background: rgba(255, 255, 255, 0.025);
+  color: var(--text-faint);
+  font-size: 0.75rem;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Month heading inside the list, e.g. "November 2026" */
+.tx-month {
+  padding: 1.4rem 0.4rem 0.5rem;
+  border-bottom: 1px solid var(--line-strong);
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-style: italic;
+  color: var(--gold-bright);
+}
+
+/* Description column: badge + title (+ subtitle on phones) */
+.tx-main {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  min-width: 0;
+}
+.tx-badge {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  font-family: var(--font-serif);
+  font-weight: 600;
+}
+.tx-badge.income {
+  color: var(--income);
+}
+.tx-badge.expense {
+  color: var(--gold);
+}
+.tx-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.tx-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 600;
+}
+.tx-sub {
+  display: none; /* only on phones */
+  font-size: 0.8rem;
+  color: var(--text-faint);
+}
+
+.tx-date {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* Outlined label for the category */
+.chip {
+  display: inline-block;
+  max-width: 100%;
+  padding: 0.2rem 0.7rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+/* Coloured label for the type */
+.pill {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 650;
+}
+.pill.income {
+  color: var(--income);
+  background: var(--income-bg);
+}
+.pill.expense {
+  color: var(--expense);
+  background: var(--expense-bg);
+}
+
+.tx-amount {
+  text-align: right;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.tx-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.2rem;
+}
+
+/* Medium screens: drop the Category and Type columns (the badge colour and
+   the +/− sign still show them) */
+@media (max-width: 1150px) {
+  .tx-list {
+    --tx-columns: minmax(0, 1fr) 120px 140px 84px;
+  }
+  .tx-category,
+  .tx-type,
+  .tx-head > :nth-child(2),
+  .tx-head > :nth-child(4) {
+    display: none;
+  }
+}
+
+/* Phones: compact cards [badge | title + category·date | amount] */
+@media (max-width: 600px) {
+  .tx-head,
+  .tx-date {
+    display: none;
+  }
+  .tx-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.3rem 0.8rem;
+    padding: 0.85rem 0.2rem;
+  }
+  .tx-sub {
+    display: block;
+  }
+  .tx-amount {
+    font-size: 1rem;
+  }
+  /* Actions move to the second line, under the amount */
+  .tx-actions {
+    grid-column: 2;
+    margin-top: -0.3rem;
+  }
+}
+
+/* The "Amount" column title keeps the small header size */
+.tx-head .tx-amount {
+  font-size: inherit;
+  font-weight: inherit;
+}
