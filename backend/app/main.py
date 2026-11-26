@@ -6,7 +6,7 @@ Run it from the backend/ folder with:
 Then open http://localhost:8000/docs to see and try every endpoint.
 """
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 
 from app import models  # noqa: F401  (importing registers the tables on Base)
@@ -30,15 +30,41 @@ register_error_handlers(app)
 # and by default it BLOCKS JavaScript from reading responses of another
 # origin. This middleware adds headers that tell the browser:
 # "requests from these frontend addresses are allowed".
+#
+# Note: in development the React app reaches the API through the Vite proxy
+# (see frontend/vite.config.js), so for the browser it's the SAME origin and
+# CORS isn't even used. This setup matters if the frontend calls the API
+# directly from another address.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=CORS_ORIGINS,  # from config.py / .env
-    # We send the JWT in the Authorization header, not in cookies, so we
-    # don't need cookies ("credentials") to be shared
+    allow_origins=CORS_ORIGINS,  # from config.py / .env, never "*"
+    # Cross-origin requests may NOT carry our login cookie. The React app is
+    # served from the same origin as the API, so it doesn't need this.
     allow_credentials=False,
-    allow_methods=["*"],  # GET, POST, PUT, DELETE, ...
-    allow_headers=["*"],  # including Authorization and Content-Type
+    # Only what the API really uses (smaller list = smaller attack surface)
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_headers=["Authorization", "Content-Type"],
 )
+
+
+@app.middleware("http")
+async def add_security_headers(request: Request, call_next):
+    """Add a few HTTP headers that tell the browser to be extra careful.
+
+    A "middleware" is code that runs around EVERY request: here we let the
+    route produce its response, then add headers to it.
+    """
+    response = await call_next(request)
+    # Don't guess the file type: a JSON answer is never run as a script/page
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    # No other website may show our pages inside an <iframe> (clickjacking)
+    response.headers["X-Frame-Options"] = "DENY"
+    # Don't send our URLs to other websites in the Referer header
+    response.headers["Referrer-Policy"] = "no-referrer"
+    # Financial data should not be stored in the browser's or a proxy's cache
+    if request.url.path.startswith("/api/"):
+        response.headers["Cache-Control"] = "no-store"
+    return response
 
 # Plug in the groups of routes defined in app/routers/
 app.include_router(auth.router)
