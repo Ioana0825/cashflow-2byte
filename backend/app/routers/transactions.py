@@ -50,7 +50,8 @@ def list_transactions(
     # All of these are optional "query parameters", e.g.
     #   /api/transactions?type=expense&category=Food&from=2026-11-01&to=2026-11-30
     type: Optional[TransactionType] = None,
-    category: Optional[str] = None,
+    # Same limit as when a category is saved (see schemas.py)
+    category: Optional[str] = Query(default=None, max_length=50),
     # "from" is a reserved word in Python, so the variable is date_from and
     # alias="from" keeps the nice name in the URL
     date_from: Optional[date] = Query(default=None, alias="from"),

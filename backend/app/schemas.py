@@ -35,14 +35,27 @@ class UserCreate(BaseModel):
 
     email: EmailStr  # EmailStr checks that it really looks like an email
     password: str = Field(min_length=8, max_length=72)
-    # max 72 because bcrypt only uses the first 72 bytes of a password
+
+    @field_validator("password")
+    @classmethod
+    def password_is_strong_enough(cls, value: str) -> str:
+        # bcrypt only uses the first 72 BYTES. max_length=72 above counts
+        # characters, but "ă" or an emoji is 2-4 bytes, so we check bytes too.
+        if len(value.encode("utf-8")) > 72:
+            raise ValueError("Password is too long")
+        # A very simple strength rule (the frontend checks the same thing)
+        if not any(ch.isalpha() for ch in value) or not any(ch.isdigit() for ch in value):
+            raise ValueError("Password must contain at least one letter and one number")
+        return value
 
 
 class UserLogin(BaseModel):
     """Body of POST /api/auth/login."""
 
     email: EmailStr
-    password: str
+    # A max length stops someone from sending a 10 MB "password" to make the
+    # server do useless work
+    password: str = Field(min_length=1, max_length=128)
 
 
 class UserOut(BaseModel):
@@ -86,6 +99,15 @@ class TransactionCreate(BaseModel):
         value = value.strip()
         if not value:
             raise ValueError("Category cannot be empty")
+        return value
+
+    @field_validator("date")
+    @classmethod
+    def date_is_realistic(cls, value: date) -> date:
+        # Catches typos like year 0202 or 20266 that are valid dates but
+        # obviously wrong for a personal budget
+        if not 1900 <= value.year <= 2100:
+            raise ValueError("Date must be between 1900 and 2100")
         return value
 
     @field_validator("description")
