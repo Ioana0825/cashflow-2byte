@@ -16,11 +16,16 @@ what /logout does. (The token itself would stay valid until it expires; see
 the security notes in the README.)
 """
 
-from fastapi import APIRouter, Depends, HTTPException, Response, status
+from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.models import User
+from app.rate_limit import (
+    check_login_allowed,
+    record_failed_login,
+    reset_login_failures,
+)
 from app.schemas import TokenOut, UserCreate, UserLogin, UserOut
 from app.security import (
     DUMMY_PASSWORD_HASH,
@@ -66,8 +71,13 @@ def register(data: UserCreate, response: Response, db: Session = Depends(get_db)
 
 
 @router.post("/login", response_model=TokenOut)
-def login(data: UserLogin, response: Response, db: Session = Depends(get_db)):
+def login(
+    data: UserLogin, request: Request, response: Response, db: Session = Depends(get_db)
+):
     """Check email + password, then log the user in."""
+    # 429 if there were too many failed attempts recently (see rate_limit.py)
+    check_login_allowed(request, data.email)
+
     user = db.query(User).filter(User.email == data.email.lower()).first()
 
     # Always run ONE bcrypt check, even when the email doesn't exist (against a
@@ -79,11 +89,13 @@ def login(data: UserLogin, response: Response, db: Session = Depends(get_db)):
     # Same message whether the email or the password is wrong, so nobody can
     # use this endpoint to find out which emails have an account
     if user is None or not password_ok:
+        record_failed_login(request, data.email)
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect email or password.",
         )
 
+    reset_login_failures(request, data.email)
     return login_response(user, response)
 
 
