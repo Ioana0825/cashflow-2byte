@@ -1,0 +1,94 @@
+/* Styles shared by the Dashboard and Transactions pages */
+
+/* Page title area */
+.page-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+.page-head .eyebrow {
+  display: block;
+  margin-bottom: 0.6rem;
+  color: var(--gold);
+}
+.page-sub {
+  margin-top: 0.4rem;
+  color: var(--text-muted);
+}
+
+/* A panel with a title row (e.g. "Recent transactions   View all →") */
+.panel-section {
+  padding: 1.4rem 1.6rem;
+}
+.panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-weight: 650;
+  font-size: 0.9rem;
+}
+.link-arrow svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.15s;
+}
+.link-arrow:hover svg {
+  transform: translateX(3px);
+}
+
+/* Shown when there are no transactions yet */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 3rem 1rem;
+  text-align: center;
+  color: var(--text-muted);
+}
+.empty-state svg {
+  width: 40px;
+  height: 40px;
+  color: var(--gold);
+  opacity: 0.8;
+}
+.empty-state h3 {
+  font-size: 1.25rem;
+  color: var(--text);
+}
+.empty-state .btn {
+  margin-top: 0.6rem;
+}
+
+.loading-box {
+  display: grid;
+  place-items: center;
+  padding: 3rem;
+}
+
+.load-error {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.8rem;
+}
+
+@media (max-width: 600px) {
+  .panel-section {
+    padding: 1.1rem 1rem;
+  }
+  /* On phones the "+" in the bottom bar replaces the header button */
+  .page-head .btn-gold {
+    display: none;
+  }
+}

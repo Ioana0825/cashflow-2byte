@@ -1,0 +1,128 @@
+/* Three cards: the balance card is wider (1.35 parts vs 1 part each) */
+.summary-cards {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1.1rem;
+  margin-bottom: 1.6rem;
+}
+
+.summary-card {
+  position: relative;
+  overflow: clip;
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  min-height: 128px;
+  padding: 1.4rem 1.5rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line);
+  background: linear-gradient(160deg, var(--surface) 0%, var(--bg-raised) 100%);
+}
+
+.summary-icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 15px;
+}
+.summary-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.summary-label {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--text-muted);
+}
+.summary-value {
+  margin-top: 0.15rem;
+  font-size: clamp(1.6rem, 1.2rem + 1vw, 2.1rem);
+  font-weight: 600;
+  line-height: 1.15;
+}
+.summary-note {
+  margin-top: 0.3rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* ---- Balance: gold border, warm glow and the ribbon decoration */
+.summary-card.balance {
+  border-color: var(--line-strong);
+  background:
+    radial-gradient(ellipse at 0% 0%, rgba(212, 174, 106, 0.2), transparent 60%),
+    linear-gradient(160deg, #2a2116 0%, #15110d 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 233, 190, 0.08);
+}
+.summary-card.balance .summary-icon {
+  color: var(--gold-bright);
+  background: rgba(212, 174, 106, 0.14);
+  border: 1px solid var(--line-strong);
+}
+.summary-card.balance .summary-value {
+  font-size: clamp(1.9rem, 1.4rem + 1.3vw, 2.6rem);
+  color: #f6e7c6;
+}
+.summary-card.balance .summary-value.expense {
+  color: var(--expense);
+}
+.balance-lines {
+  position: absolute;
+  right: -10%;
+  bottom: -20%;
+  width: 70%;
+  height: 90%;
+  opacity: 0.5;
+  pointer-events: none;
+}
+/* keep the text above the decoration */
+.summary-card > :not(.balance-lines) {
+  position: relative;
+}
+
+/* ---- Income (green tint) and Expenses (red tint) */
+.income-card .summary-icon {
+  color: var(--income);
+  background: var(--income-bg);
+}
+.income-card {
+  background: linear-gradient(160deg, rgba(108, 196, 149, 0.07) 0%, var(--bg-raised) 70%);
+}
+.expense-card .summary-icon {
+  color: var(--expense);
+  background: var(--expense-bg);
+}
+.expense-card {
+  background: linear-gradient(160deg, rgba(229, 125, 114, 0.07) 0%, var(--bg-raised) 70%);
+}
+
+/* Tablet: balance on its own row, the two others below it */
+@media (max-width: 1100px) {
+  .summary-cards {
+    grid-template-columns: 1fr 1fr;
+  }
+  .summary-card.balance {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Phone: everything in one column, a bit more compact */
+@media (max-width: 520px) {
+  .summary-cards {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+  .summary-card {
+    min-height: 0;
+    padding: 1.1rem 1.2rem;
+  }
+  .summary-icon {
+    width: 44px;
+    height: 44px;
+  }
+}
