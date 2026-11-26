@@ -20,6 +20,17 @@ JWT_SECRET = os.getenv("JWT_SECRET")
 JWT_ALGORITHM = "HS256"
 JWT_EXPIRE_MINUTES = int(os.getenv("JWT_EXPIRE_MINUTES", "60"))
 
+# ---------------------------------------------------------------- login cookie
+# After login the token is ALSO saved in a cookie that JavaScript cannot read
+# ("httpOnly"). The React app uses that cookie instead of keeping the token in
+# localStorage, so even if an attacker managed to run JavaScript in our page
+# (an XSS attack), they could not steal the token. See security.py.
+AUTH_COOKIE_NAME = "cashflow_token"
+
+# Secure=True means "only send this cookie over HTTPS". Keep it false while
+# developing on http://localhost and set COOKIE_SECURE=true on a real server.
+COOKIE_SECURE = os.getenv("COOKIE_SECURE", "false").lower() == "true"
+
 # Websites allowed to call this API from the browser (see CORS in main.py).
 # Comma-separated; the default is the Vite dev server of our React frontend.
 CORS_ORIGINS = [
