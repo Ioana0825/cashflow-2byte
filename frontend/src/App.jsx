@@ -16,11 +16,10 @@ import AppLayout from './components/AppLayout'
 import { GuestRoute, ProtectedRoute } from './components/RouteGuards'
 import { AuthProvider } from './context/AuthContext'
 import { ToastProvider } from './context/ToastContext'
+import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
 import Register from './pages/Register'
-
-// Temporary placeholders, replaced by the real pages in the next steps
-const Placeholder = ({ title }) => <h1>{title}</h1>
+import Transactions from './pages/Transactions'
 
 export default function App() {
   return (
@@ -35,8 +34,8 @@ export default function App() {
 
             <Route element={<ProtectedRoute />}>
               <Route element={<AppLayout />}>
-                <Route path="/" element={<Placeholder title="Dashboard" />} />
-                <Route path="/transactions" element={<Placeholder title="Transactions" />} />
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/transactions" element={<Transactions />} />
               </Route>
             </Route>
 
