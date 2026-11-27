@@ -130,3 +130,102 @@ Known limits (fine for a school project, to fix before a real launch):
 - Login attempt counters are kept in memory, so they reset when the server restarts.
 - `/docs` is public; turn it off on a public server.
 - On a real server, serve everything over HTTPS and add a Content-Security-Policy header.
+
+- 
+---
+
+## Feature Plan
+
+### Core Features – Mandatory
+
+| ID | Feature | Description |
+|---|---|---|
+| F01 | User Registration | Crearea unui cont cu email și parolă. |
+| F02 | User Login | Autentificarea utilizatorului. |
+| F03 | User Logout | Deconectarea utilizatorului. |
+| F04 | Add Transaction | Adăugarea veniturilor și cheltuielilor. |
+| F05 | Edit Transaction | Modificarea tranzacțiilor existente. |
+| F06 | Delete Transaction | Ștergerea tranzacțiilor. |
+| F07 | Transaction History | Afișarea istoricului tranzacțiilor. |
+| F08 | Financial Dashboard | Vizualizarea situației financiare. |
+| F09 | Balance Calculation | Calcularea veniturilor, cheltuielilor și soldului. |
+| F10 | Authentication & Data Security | Protejarea datelor fiecărui utilizator. |
+| F11 | Input Validation | Validarea datelor în frontend și backend. |
+| F12 | Error Handling | Gestionarea erorilor și afișarea mesajelor. |
+| F13 | Responsive Design | Adaptarea interfeței pentru desktop, tabletă și telefon. |
+
+### Optional Features – ASSIST Requirements
+
+| ID | Feature | Description |
+|---|---|---|
+| F14 | Category Filtering | Filtrarea tranzacțiilor după categorie. |
+| F15 | Date Filtering | Filtrarea tranzacțiilor după perioadă. |
+| F16 | Transaction Sorting | Sortarea tranzacțiilor. |
+| F17 | CSV Export | Exportarea tranzacțiilor într-un fișier CSV. |
+| F18 | Category Charts | Reprezentarea grafică a datelor financiare. |
+| F19 | Monthly Summary | Vizualizarea situației financiare lunare. |
+| F20 | Category Color Coding | Diferențierea categoriilor prin culori. |
+
+## Implementation Roadmap
+
+| Phase | Name | Features |
+|---|---|---|
+| Phase 1 | Authentication & Security | F01, F02, F03, F10 |
+| Phase 2 | Transaction Management | F04, F05, F06, F07 |
+| Phase 3 | Financial Dashboard | F08, F09 |
+| Phase 4 | UI & Quality Refinement | F11, F12, F13 |
+| Phase 5 | Optional Enhancements | F14–F20 |
+| Phase 6 | Testing & Documentation | Final verification |
+
+Securitatea, validarea datelor și gestionarea erorilor sunt urmărite pe parcursul tuturor etapelor.
+
+Planul include atât funcționalități existente, cât și funcționalități planificate. Stadiul implementării este urmărit separat în lista de sarcini a echipei.
+
+## UI Design – Black & Gold
+
+The proposed visual identity follows a Luxury Minimalist Fintech style.
+
+### Color Palette
+
+| Color | HEX | Purpose |
+|---|---|---|
+| Black | #121212 | Main background |
+| Charcoal | #1E1E1E | Cards and containers |
+| Gold | #C6A568 | Primary buttons and accents |
+| Champagne | #E8D6B0 | Secondary accents |
+| Ivory | #F8F6F1 | Main text |
+| Green | #4CAF78 | Income |
+| Red | #E57373 | Expenses |
+
+### Typography
+
+- Playfair Display – Logo and headings.
+- Inter – Forms, buttons and financial information.
+
+### UI Mockups
+
+- Login Page
+- Register Page
+- Dashboard Page
+
+Designul urmărește o interfață elegantă, intuitivă și responsive. Paleta și fonturile reprezintă o propunere de design.
+
+## Testing Plan
+
+| Test Category | Description |
+|---|---|
+| Authentication Testing | Verificarea înregistrării, autentificării și deconectării. |
+| CRUD Testing | Testarea operațiilor cu tranzacții. |
+| Calculation Testing | Verificarea calculelor financiare. |
+| Security Testing | Verificarea accesului la date folosind două conturi diferite. |
+| Validation Testing | Testarea datelor invalide. |
+| Responsive Testing | Verificarea interfeței pe diferite dispozitive. |
+| Integration Testing | Verificarea comunicării dintre React și FastAPI. |
+| Optional Features Testing | Testarea funcționalităților opționale implementate. |
+
+## Expected Outcome
+
+CashFlow aims to provide a secure, intuitive and responsive personal finance management experience using React, Python FastAPI and PostgreSQL.
+
+Source: ASSIST – CashFlow Application Project Requirements.
+
